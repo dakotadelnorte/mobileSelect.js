@@ -9,7 +9,7 @@
     return dom.getElementsByClassName(string);
   }
   // 构造器
-  function MobileSelect (config) {
+  function MobileSelect (config, theEl) {
     this.mobileSelect;
     this.wheelsData = config.wheels;
     this.jsonType = false;
@@ -28,19 +28,23 @@
     this.curDistance = [];
     this.clickStatus = false;
     this.isPC = true;
-    this.init(config);
+    this.init(config, theEl);
   }
   MobileSelect.prototype = {
     constructor: MobileSelect,
-    init: function (config) {
+    init: function (config, theEl) {
       var _this = this;
       _this.keyMap = config.keyMap ? config.keyMap : { id: 'id', value: 'value', childs: 'childs' };
       _this.checkDataType();
-      _this.trigger = document.querySelector(config.trigger);
+
+      _this.trigger = theEl || document.querySelector(config.trigger);
+
       _this.inline = !!config.inline;
       _this.renderWheels(_this.wheelsData, config.cancelBtnText, config.ensureBtnText);
       if (!_this.trigger) {
-        console.error('mobileSelect has been successfully installed, but no trigger found on your page.');
+        console.log(config);
+        console.log(theEl);
+        console.error('mobileSelect has been successfully installed, but no trigger or element found on your page.');
         return false;
       }
       _this.wheel = getClass(_this.mobileSelect, 'wheel');

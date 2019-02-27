@@ -29,7 +29,8 @@
             <div class="demo">
                 <div id="trigger1"></div>
                 <div id="trigger2">Hola!</div>
-                <!--<div id="trigger3">Opción múltiple</div>
+                <div id="trigger3">Elemento</div>
+                <!--
             <div id="trigger4">Selección regional en cascada</div>
             <div id="trigger5">Selección de modelo en cascada</div> -->
             </div>
@@ -41,7 +42,7 @@
 
     <script type="text/javascript">
 
-
+window.onload = () => {
         var weekdayArr = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
         var timeArr = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
         var numArr = ['1', '2', '3', '4', '5'];
@@ -223,7 +224,6 @@
          */
 
 
-
         var mobileSelect1 = new MobileSelect({
             trigger: '#trigger1',
             inline: true,
@@ -257,24 +257,23 @@
         });
 
 
-// var mobileSelect3 = new MobileSelect({
-//     trigger: '#trigger3',
-//     title: '多项选择',
-//     wheels: [
-//                 {data: numArr},
-//                 {data: numArr},
-//                 {data: numArr},
-//                 {data: numArr},
-//                 {data: numArr}
-//             ],
-//     position:[0, 1, 0, 1, 0],
-//     transitionEnd:function(indexArr, data){
-//         //console.log(data);
-//     },
-//     callback:function(indexArr, data){
-//         console.log(data);
-//     }
-// });
+        var mobileSelect3 = new MobileSelect({
+            title: '多项选择',
+            wheels: [
+                        {data: numArr},
+                        {data: numArr},
+                        {data: numArr},
+                        {data: numArr},
+                        {data: numArr}
+                    ],
+            position:[0, 1, 0, 1, 0],
+            transitionEnd:function(indexArr, data){
+                console.log(data);
+            },
+            callback:function(indexArr, data){
+                console.log(data);
+            }
+        }, document.getElementById("trigger3"));
 
 
 // var mobileSelect4 = new MobileSelect({
@@ -325,7 +324,7 @@
 // });
 
 
-
+}
     </script>
 
 
