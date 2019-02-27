@@ -346,6 +346,7 @@ npm install mobile-select -D
 |Option|Default|Type|Description |
 | ------ |------|-----|-----|
 |trigger|Required parameter. No default value|String| The id/class/tag of the trigger object |
+|inline| false as default value |Boolean| True for show inline on trigger setted or false for default behaviour |
 |wheels|Required parameter. No default value|Array|The data displayed on the wheel|
 |callback|function(indexArr, data){}|function | A callback function after successful selected, return parameter (indexArr, data) |
 |transitionEnd|function(indexArr, data){}|function|A callback function that after each gesture sliding, return parameter (indexArr, data)|
