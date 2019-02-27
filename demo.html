@@ -27,11 +27,11 @@
                 <h1>mobileSelect Demo</h1>
             </div>
             <div class="demo">
-                <div id="trigger1">单项选择</div>
-                <div id="trigger2">双项选择</div>
-                <div id="trigger3">多项选择</div>
-                <div id="trigger4">地区选择-级联</div>
-                <div id="trigger5">车型选择-级联</div>
+                <div id="trigger1"></div>
+                <div id="trigger2">Hola!</div>
+                <!--<div id="trigger3">Opción múltiple</div>
+            <div id="trigger4">Selección regional en cascada</div>
+            <div id="trigger5">Selección de modelo en cascada</div> -->
             </div>
         </div>
 
@@ -42,7 +42,7 @@
     <script type="text/javascript">
 
 
-        var weekdayArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+        var weekdayArr = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
         var timeArr = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
         var numArr = ['1', '2', '3', '4', '5'];
 
@@ -226,13 +226,13 @@
 
         var mobileSelect1 = new MobileSelect({
             trigger: '#trigger1',
-            title: '单项选择',
+            inline: true,
             wheels: [
                 { data: weekdayArr }
             ],
-            position: [2], //初始化定位 打开时默认选中的哪个 如果不填默认为0
+            position: [4], //初始化定位 打开时默认选中的哪个 如果不填默认为0
             transitionEnd: function (indexArr, data) {
-                //console.log(data);
+                console.log(data);
             },
             callback: function (indexArr, data) {
                 console.log(data);
@@ -249,7 +249,7 @@
             ],
             position: [1, 2],
             transitionEnd: function (indexArr, data) {
-                //console.log(data);
+                console.log(data);
             },
             callback: function (indexArr, data) {
                 console.log(data);
@@ -257,74 +257,72 @@
         });
 
 
-        var mobileSelect3 = new MobileSelect({
-            trigger: '#trigger3',
-            title: '多项选择',
-            wheels: [
-                { data: numArr },
-                { data: numArr },
-                { data: numArr },
-                { data: numArr },
-                { data: numArr }
-            ],
-            position: [0, 1, 0, 1, 0],
-            transitionEnd: function (indexArr, data) {
-                //console.log(data);
-            },
-            callback: function (indexArr, data) {
-                console.log(data);
-            }
-        });
+// var mobileSelect3 = new MobileSelect({
+//     trigger: '#trigger3',
+//     title: '多项选择',
+//     wheels: [
+//                 {data: numArr},
+//                 {data: numArr},
+//                 {data: numArr},
+//                 {data: numArr},
+//                 {data: numArr}
+//             ],
+//     position:[0, 1, 0, 1, 0],
+//     transitionEnd:function(indexArr, data){
+//         //console.log(data);
+//     },
+//     callback:function(indexArr, data){
+//         console.log(data);
+//     }
+// });
 
 
-        var mobileSelect4 = new MobileSelect({
-            trigger: '#trigger4',
-            title: '地区选择',
-            wheels: [
-                {
-                    data: [
-                        {
-                            id: '1',
-                            value: '附近',
-                            childs: [
-                                { id: '1', value: '1000米' },
-                                { id: '2', value: '2000米' },
-                                { id: '3', value: '3000米' },
-                                { id: '4', value: '5000米' },
-                                { id: '5', value: '10000米' }
-                            ]
-                        },
-                        { id: '2', value: '上城区' },
-                        { id: '3', value: '下城区' },
-                        { id: '4', value: '江干区' },
-                        { id: '5', value: '拱墅区' },
-                        { id: '6', value: '西湖区' }
-                    ]
-                }
-            ],
-            transitionEnd: function (indexArr, data) {
-                //console.log(data);
-            },
-            callback: function (indexArr, data) {
-                console.log(data);
-            }
-        });
+// var mobileSelect4 = new MobileSelect({
+//     trigger: '#trigger4',
+//     title: '地区选择',
+//     wheels: [
+//                 {data:[
+//                     {
+//                         id:'1',
+//                         value:'附近',
+//                         childs:[
+//                             {id:'1',value:'1000米'},
+//                             {id:'2',value:'2000米'},
+//                             {id:'3',value:'3000米'},
+//                             {id:'4',value:'5000米'},
+//                             {id:'5',value:'10000米'}
+//                         ]
+//                     },
+//                     {id:'2',value:'上城区'},
+//                     {id:'3',value:'下城区'},
+//                     {id:'4',value:'江干区'},
+//                     {id:'5',value:'拱墅区'},
+//                     {id:'6',value:'西湖区'}
+//                 ]}
+//             ],
+//     transitionEnd:function(indexArr, data){
+//         //console.log(data);
+//     },
+//     callback:function(indexArr, data){
+//         console.log(data);
+//     }
+// });
 
 
-        var mobileSelect5 = new MobileSelect({
-            trigger: '#trigger5',
-            title: '车型选择',
-            wheels: [
-                { data: UplinkData }
-            ],
-            position: [2, 0],
-            transitionEnd: function (indexArr, data) {
-                //console.log(data);
-            },
-            callback: function (indexArr, data) {
-                console.log(data);
-            }
-        });
+// var mobileSelect5 = new MobileSelect({
+//     trigger: '#trigger5',
+//     title: '车型选择',
+//     wheels: [
+//                 {data : UplinkData}
+//             ],
+//     position: [2,0],
+//     transitionEnd:function(indexArr, data){
+//         //console.log(data);
+//     },
+//     callback:function(indexArr, data){
+//         console.log(data);
+//     }
+// });
 
 
 

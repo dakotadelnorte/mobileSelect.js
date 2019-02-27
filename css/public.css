@@ -193,7 +193,7 @@ body {
   text-align: center;
 }
 
-.contain .demo div {
+.contain .demo div.noInline {
   display: block;
   width: 100%;
   height: 40px;

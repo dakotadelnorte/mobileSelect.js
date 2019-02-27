@@ -36,8 +36,9 @@
       var _this = this;
       _this.keyMap = config.keyMap ? config.keyMap : { id: 'id', value: 'value', childs: 'childs' };
       _this.checkDataType();
-      _this.renderWheels(_this.wheelsData, config.cancelBtnText, config.ensureBtnText);
       _this.trigger = document.querySelector(config.trigger);
+      _this.inline = !!config.inline;
+      _this.renderWheels(_this.wheelsData, config.cancelBtnText, config.ensureBtnText);
       if (!_this.trigger) {
         console.error('mobileSelect has been successfully installed, but no trigger found on your page.');
         return false;
@@ -58,7 +59,7 @@
       _this.titleText = config.title || '';
       _this.connector = config.connector || ' ';
       _this.triggerDisplayData = !(typeof (config.triggerDisplayData) === 'undefined') ? config.triggerDisplayData : true;
-      _this.trigger.style.cursor = 'pointer';
+      //   _this.trigger.style.cursor = 'pointer';
       _this.setStyle(config);
       _this.setTitle(_this.titleText);
       _this.checkIsPC();
@@ -78,37 +79,41 @@
 
       _this.setCurDistance(_this.initPosition);
 
-      // 按钮监听
-      _this.cancelBtn.addEventListener('click', function () {
-        _this.hide();
-      });
+      if (!_this.inline) {
+        // 按钮监听
+        _this.cancelBtn.addEventListener('click', function () {
+          _this.hide();
+        });
 
-      _this.ensureBtn.addEventListener('click', function () {
-        _this.hide();
-        if (!_this.liHeight) {
-          _this.liHeight = _this.mobileSelect.querySelector('li').offsetHeight;
-        }
-        var tempValue = '';
-        for (var i = 0; i < _this.wheel.length; i++) {
-          i == _this.wheel.length - 1 ? tempValue += _this.getInnerHtml(i) : tempValue += _this.getInnerHtml(i) + _this.connector;
-        }
-        if (_this.triggerDisplayData) {
-          _this.trigger.innerHTML = tempValue;
-        }
-        _this.curIndexArr = _this.getIndexArr();
-        _this.curValue = _this.getCurValue();
-        _this.callback(_this.curIndexArr, _this.curValue);
-      });
+        _this.ensureBtn.addEventListener('click', function () {
+          _this.hide();
+          if (!_this.liHeight) {
+            _this.liHeight = _this.mobileSelect.querySelector('li').offsetHeight;
+          }
+          var tempValue = '';
+          for (var i = 0; i < _this.wheel.length; i++) {
+            i === _this.wheel.length - 1 ? tempValue += _this.getInnerHtml(i) : tempValue += _this.getInnerHtml(i) + _this.connector;
+          }
+          if (_this.triggerDisplayData) {
+            _this.trigger.innerHTML = tempValue;
+          }
+          _this.curIndexArr = _this.getIndexArr();
+          _this.curValue = _this.getCurValue();
+          _this.callback(_this.curIndexArr, _this.curValue);
+        });
 
-      _this.trigger.addEventListener('click', function () {
+        _this.trigger.addEventListener('click', function () {
+          _this.show();
+        });
+        _this.grayLayer.addEventListener('click', function () {
+          _this.hide();
+        });
+        _this.popUp.addEventListener('click', function () {
+          event.stopPropagation();
+        });
+      } else {
         _this.show();
-      });
-      _this.grayLayer.addEventListener('click', function () {
-        _this.hide();
-      });
-      _this.popUp.addEventListener('click', function () {
-        event.stopPropagation();
-      });
+      }
 
       _this.fixRowStyle(); // 修正列数
     },
@@ -116,7 +121,9 @@
     setTitle: function (string) {
       var _this = this;
       _this.titleText = string;
-      _this.mobileSelect.querySelector('.title').innerHTML = _this.titleText;
+      if (!_this.inline) {
+        _this.mobileSelect.querySelector('.title').innerHTML = _this.titleText;
+      }
     },
 
     setStyle: function (config) {
@@ -186,29 +193,42 @@
       var cancelText = cancelBtnText || '取消';
       var ensureText = ensureBtnText || '确认';
       _this.mobileSelect = document.createElement('div');
-      _this.mobileSelect.className = 'mobileSelect';
-      _this.mobileSelect.innerHTML =
-				'<div class="grayLayer"></div>' +
-				'<div class="content">' +
-				'<div class="btnBar">' +
-				'<div class="fixWidth">' +
-				'<div class="cancel">' + cancelText + '</div>' +
-				'<div class="title"></div>' +
-				'<div class="ensure">' + ensureText + '</div>' +
-				'</div>' +
-				'</div>' +
-				'<div class="panel">' +
+      _this.mobileSelect.className = ('mobileSelect ' + (_this.inline ? 'inline' : 'noInline'));
+      let contentHtml = '';
+      if (!_this.inline) {
+        contentHtml += '<div class="grayLayer"></div>';
+      }
+      contentHtml += '<div class="content">';
+      if (!_this.inline) {
+        contentHtml +=
+					'<div class="btnBar">' +
+					'<div class="fixWidth">' +
+					'<div class="cancel">' + cancelText + '</div>' +
+					'<div class="title"></div>' +
+					'<div class="ensure">' + ensureText + '</div>' +
+					'</div>' +
+					'</div>';
+      }
+      contentHtml += '<div class="panel">' +
 				'<div class="fixWidth">' +
 				'<div class="wheels">' +
 				'</div>' +
 				'<div class="selectLine"></div>' +
 				'<div class="shadowMask"></div>' +
 				'</div>' +
-				'</div>' +
 				'</div>';
-      document.body.appendChild(_this.mobileSelect);
+      if (!_this.inline) {
+        contentHtml += '</div>';
+	  }
+	  contentHtml += '</div>';
+	  _this.mobileSelect.innerHTML = contentHtml;
+	  if (this.inline) {
+        _this.trigger.appendChild(_this.mobileSelect);
+	  } else {
+        document.body.appendChild(_this.mobileSelect);
+	  }
 
-      // 根据数据长度来渲染
+      // Renderizar de acuerdo a la longitud de los datos.
 
       var tempHTML = '';
       for (var i = 0; i < wheelsData.length; i++) {
@@ -216,12 +236,12 @@
         tempHTML += '<div class="wheel"><ul class="selectContainer">';
         if (_this.jsonType) {
           for (var j = 0; j < wheelsData[i].data.length; j++) {
-            // 行
+            // Linea
             tempHTML += '<li data-id="' + wheelsData[i].data[j][_this.keyMap.id] + '">' + wheelsData[i].data[j][_this.keyMap.value] + '</li>';
           }
         } else {
           for (var j = 0; j < wheelsData[i].data.length; j++) {
-            // 行
+            // Linea
             tempHTML += '<li>' + wheelsData[i].data[j] + '</li>';
           }
         }
@@ -233,7 +253,7 @@
     addListenerAll: function () {
       var _this = this;
       for (var i = 0; i < _this.slider.length; i++) {
-        // 手势监听
+        // Monitore de
         (function (i) {
           _this.addListenerWheel(_this.wheel[i], i);
         })(i);
@@ -349,9 +369,7 @@
       }
       var resultNode;
       for (var i = 0; i <= index; i++) {
-        if (i == 0)
-          {resultNode = _this.cascadeJsonData[posIndexArr[0]];}
-        else {
+        if (i == 0) { resultNode = _this.cascadeJsonData[posIndexArr[0]]; } else {
           resultNode = resultNode[_this.keyMap.childs][posIndexArr[i]];
         }
       }
